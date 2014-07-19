@@ -1,17 +1,15 @@
 <idea-plugin version="2">
-	<id>com.yourcompany.unique.plugin.id</id>
-	<name>Plugin display name here</name>
+	<id>org.kostaskougios.idea.scala-idea-extensions</id>
+	<name>Scala-IDEA-Extensions</name>
 	<version>1.0</version>
 	<vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
 	<description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Allows scala scripts to be executed when events occur in the project, see
+      https://github.com/kostaskougios/scala-idea-extensions
     ]]></description>
 
 	<change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
     ]]>
 	</change-notes>
 

@@ -1,6 +1,10 @@
 package org.kostaskougios.idea.scripts
 
 import com.intellij.openapi.components.ApplicationComponent
+import com.googlecode.scalascriptengine.ScalaScriptEngine
+import java.io.File
+import scala.collection.JavaConverters._
+import com.intellij.ide.plugins.cl.PluginClassLoader
 
 /**
  * @author	kostas.kougios
@@ -8,14 +12,41 @@ import com.intellij.openapi.components.ApplicationComponent
  */
 class ScriptsManager extends ApplicationComponent
 {
-	println(List(1, 2, 3))
+	private val userHome = System.getProperty("user.home")
+	private val sourcePath = new File(userHome, ".scala-idea-extensions")
+	println(s"ScriptsManager: Script dir : ${sourcePath}")
+
+	val config = ScalaScriptEngine.defaultConfig(sourcePath).copy(compilationClassPaths = currentClassPath)
+	private val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
 
 	override def initComponent() {
-		println("ScriptsManager init()")
+		try {
+			scriptEngine.refresh
+		} catch {
+			case e: Throwable => e.printStackTrace()
+		}
 	}
 
 	override def disposeComponent() {
 	}
 
 	override def getComponentName = "ScriptsManager"
+
+	private def currentClassPath = {
+		// this tries to detect the classpath, if it doesn't work
+		// for you, please email me or open an issue explaining your
+		// usecase.
+		def cp(cl: ClassLoader): Set[File] = cl match {
+			case ucl: PluginClassLoader =>
+				ucl.getUrls.asScala.map(u => new File(u.getFile)).toSet
+		}
+		try {
+			val cl = getClass.getClassLoader
+			cp(cl) ++ System.getProperty("java.class.path").split(File.pathSeparator).map(p => new File(p)).toSet
+		} catch {
+			case e: Throwable => e.printStackTrace()
+				Set[File]()
+		}
+	}
+
 }

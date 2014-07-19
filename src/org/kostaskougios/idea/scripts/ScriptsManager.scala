@@ -1,10 +1,13 @@
 package org.kostaskougios.idea.scripts
 
-import com.intellij.openapi.components.ApplicationComponent
-import com.googlecode.scalascriptengine.ScalaScriptEngine
 import java.io.File
-import scala.collection.JavaConverters._
+
+import com.googlecode.scalascriptengine.ScalaScriptEngine
 import com.intellij.ide.plugins.cl.PluginClassLoader
+import com.intellij.openapi.components.ApplicationComponent
+import org.kostaskougios.idea.eventlog.EventLog
+
+import scala.collection.JavaConverters._
 
 /**
  * @author	kostas.kougios
@@ -23,7 +26,8 @@ class ScriptsManager extends ApplicationComponent
 		try {
 			scriptEngine.refresh
 		} catch {
-			case e: Throwable => e.printStackTrace()
+			case e: Throwable =>
+				EventLog.error("Script Compilation Error", "Error compiling classes in script directory:", e)
 		}
 	}
 

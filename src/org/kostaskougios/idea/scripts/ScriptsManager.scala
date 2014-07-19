@@ -6,6 +6,7 @@ import com.googlecode.scalascriptengine.ScalaScriptEngine
 import com.intellij.ide.plugins.cl.PluginClassLoader
 import com.intellij.openapi.components.ApplicationComponent
 import org.kostaskougios.idea.eventlog.EventLog
+import org.kostaskougios.idea.scheduling.Futures
 
 import scala.collection.JavaConverters._
 
@@ -29,11 +30,13 @@ class ScriptsManager extends ApplicationComponent
 	private val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
 
 	override def initComponent() {
-		try {
-			scriptEngine.refresh
-		} catch {
-			case e: Throwable =>
-				EventLog.error("Script Compilation Error", "Error compiling classes in script directory:", e)
+		Futures.backgroundExecution {
+			try {
+				scriptEngine.refresh
+			} catch {
+				case e: Throwable =>
+					EventLog.error("Script Compilation Error", "Error compiling classes in script directory:", e)
+			}
 		}
 	}
 

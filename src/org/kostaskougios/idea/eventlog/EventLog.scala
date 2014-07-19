@@ -3,6 +3,7 @@ package org.kostaskougios.idea.eventlog
 import java.io.{PrintWriter, StringWriter}
 
 import com.intellij.notification.{Notification, NotificationType, Notifications}
+import org.kostaskougios.idea.scheduling.Futures
 
 /**
  * @author	kostas.kougios
@@ -11,7 +12,11 @@ import com.intellij.notification.{Notification, NotificationType, Notifications}
 object EventLog
 {
 	def info(title: String, msg: String) {
-		Notifications.Bus.notify(new Notification("scala-idea-extensions", title, msg, NotificationType.INFORMATION))
+		val notification = new Notification("scala-idea-extensions", title, msg, NotificationType.INFORMATION)
+		Notifications.Bus.notify(notification)
+		Futures.scheduledExecution(2000) {
+			notification.expire()
+		}
 	}
 
 	def error(title: String, msg: String, e: Throwable) {

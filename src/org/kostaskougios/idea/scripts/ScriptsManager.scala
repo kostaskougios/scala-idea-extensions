@@ -19,7 +19,13 @@ class ScriptsManager extends ApplicationComponent
 	private val sourcePath = new File(userHome, ".scala-idea-extensions")
 	println(s"ScriptsManager: Script dir : ${sourcePath}")
 
-	val config = ScalaScriptEngine.defaultConfig(sourcePath).copy(compilationClassPaths = currentClassPath)
+	val config = ScalaScriptEngine.defaultConfig(sourcePath).copy(
+		compilationClassPaths = currentClassPath,
+		compilationListeners = List(
+			cv =>
+				EventLog.info("Script Compilation", s"successfully compiled scripts to version ${cv.version}")
+		)
+	)
 	private val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
 
 	override def initComponent() {

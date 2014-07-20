@@ -34,6 +34,9 @@
 		<component>
 			<implementation-class>org.kostaskougios.idea.scripts.ScriptsManager</implementation-class>
 		</component>
+		<component>
+			<implementation-class>org.kostaskougios.idea.virtualfiles.VirtualFileSystemManager</implementation-class>
+		</component>
 	</application-components>
 
 	<project-components>

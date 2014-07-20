@@ -2,7 +2,7 @@ package org.kostaskougios.idea.scripts
 
 import java.io.File
 
-import com.googlecode.scalascriptengine.ScalaScriptEngine
+import com.googlecode.scalascriptengine.{ClassLoaderConfig, CodeVersion, ScalaScriptEngine}
 import com.intellij.ide.plugins.cl.PluginClassLoader
 import com.intellij.openapi.components.ApplicationComponent
 import org.kostaskougios.idea.eventlog.EventLog
@@ -18,16 +18,26 @@ class ScriptsManager extends ApplicationComponent
 {
 	private val userHome = System.getProperty("user.home")
 	private val sourcePath = new File(userHome, ".scala-idea-extensions")
-	println(s"ScriptsManager: Script dir : ${sourcePath}")
 
-	val config = ScalaScriptEngine.defaultConfig(sourcePath).copy(
+	private var compilationListeners = List[CodeVersion => Unit]()
+
+	private val config = ScalaScriptEngine.defaultConfig(sourcePath).copy(
 		compilationClassPaths = currentClassPath,
+		classLoaderConfig = ClassLoaderConfig.Default.copy(enableClassRegistry = true),
 		compilationListeners = List(
-			cv =>
-				EventLog.info("Script Compilation", s"successfully compiled scripts to version ${cv.version}")
+			cv => {
+				EventLog.info("Script Compilation", s"successfully compiled ${cv.classLoader.all.size} scripts to version ${cv.version}")
+				compilationListeners.foreach(_(cv))
+			}
 		)
 	)
 	private val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
+
+	def registerCompilationListener(listener: CodeVersion => Unit) {
+		synchronized {
+			compilationListeners = listener :: compilationListeners
+		}
+	}
 
 	override def initComponent() {
 		Futures.backgroundExecution {

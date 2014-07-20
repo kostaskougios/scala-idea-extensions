@@ -44,6 +44,7 @@ class ScriptsManager extends ApplicationComponent
 	override def initComponent() {
 		Futures.backgroundExecution {
 			try {
+				scriptEngine.deleteAllClassesInOutputDirectory()
 				scriptEngine.refresh
 			} catch {
 				case e: Throwable =>

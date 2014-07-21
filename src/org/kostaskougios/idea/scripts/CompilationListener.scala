@@ -8,5 +8,5 @@ import com.googlecode.scalascriptengine.CodeVersion
  */
 trait CompilationListener
 {
-	def compilationCompleted(codeVersion: CodeVersion)
+	def compilationCompleted(codeVersion: CodeVersion, registry: ClassRegistry)
 }

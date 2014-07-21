@@ -11,6 +11,10 @@ import org.kostaskougios.idea.scheduling.Futures
  */
 object EventLog
 {
+	def info(that: Any, msg: String) {
+		info(that.getClass.getSimpleName, msg)
+	}
+
 	def info(title: String, msg: String) {
 		val notification = new Notification("scala-idea-extensions", title, msg, NotificationType.INFORMATION)
 		Notifications.Bus.notify(notification)

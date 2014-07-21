@@ -17,23 +17,22 @@ import scala.collection.JavaConverters._
 class ScriptsManager extends ApplicationComponent
 {
 	private val userHome = System.getProperty("user.home")
-	private val sourcePath = new File(userHome, ".scala-idea-extensions")
-
-	private var compilationListeners = List[CompilationListener]()
-
+	private val sourcePath = SourcePath(new File(userHome, ".scala-idea-extensions"))
 	private val config = Config(
-		List(SourcePath(sourcePath)),
+		List(sourcePath),
 		currentClassPath,
 		Set(),
-		ClassLoaderConfig.Default.copy(enableClassRegistry = true),
+		ClassLoaderConfig.Default.copy(enableClassRegistry = false),
 		compilationListeners = List(
 			cv => {
-				EventLog.info("Script Compilation", s"successfully compiled ${cv.classLoader.all.size} scripts to version ${cv.version}")
-				compilationListeners.foreach(_.compilationCompleted(cv))
+				val registry = new ClassRegistry(Set(sourcePath.targetDir))
+				EventLog.info(this, s"successfully compiled ${registry.allClasses.size} scripts to version ${cv.version}")
+				compilationListeners.foreach(_.compilationCompleted(cv, registry))
 			}
 		)
 	)
 	private val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
+	private var compilationListeners = List[CompilationListener]()
 
 	def registerCompilationListener(listener: CompilationListener) {
 		synchronized {

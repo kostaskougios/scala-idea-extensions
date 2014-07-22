@@ -2,8 +2,8 @@ package org.kostaskougios.idea.scripts
 
 import java.io.{File, FileInputStream}
 
+import scala.language.reflectiveCalls
 import scala.reflect.ClassTag
-
 /**
  * finds all class names for a list of directories
  *

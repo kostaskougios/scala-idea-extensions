@@ -23,13 +23,14 @@ class ScriptsManager extends ApplicationComponent
 		currentClassPath,
 		Set(),
 		ClassLoaderConfig.Default.copy(enableClassRegistry = false),
-		compilationListeners = List(
+		List(
 			cv => {
 				val registry = new ClassRegistry(Set(sourcePath.targetDir))
 				EventLog.info(this, s"successfully compiled ${registry.allClasses.size} scripts to version ${cv.version}")
 				compilationListeners.foreach(_.compilationCompleted(cv, registry))
 			}
-		)
+		),
+		getClass.getClassLoader
 	)
 	// is is public so that plugins can re-compile scripts
 	val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)

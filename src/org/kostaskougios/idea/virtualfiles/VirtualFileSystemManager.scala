@@ -20,7 +20,8 @@ class VirtualFileSystemManager(scriptsManager: ScriptsManager) extends Compilati
 	VirtualFileManager.getInstance.addVirtualFileListener(new VirtualFileAdapter()
 	{
 		override def contentsChanged(event: VirtualFileEvent) = {
-			EventLog.info("file changed", event.getFileName)
+			EventLog.trace(s"file changed : ${event.getFileName}")
+
 			vfsChangeListeners.map { className =>
 				val listener = sse.newInstance[VFSChangeListener](className)
 				listener.contentsChanged(event)

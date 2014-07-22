@@ -16,6 +16,8 @@ import scala.collection.JavaConverters._
  */
 class ScriptsManager extends ApplicationComponent
 {
+	// is is public so that plugins can re-compile scripts
+	val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
 	private val userHome = System.getProperty("user.home")
 	private val sourcePath = SourcePath(new File(userHome, ".scala-idea-extensions"))
 	private val config = Config(
@@ -31,7 +33,6 @@ class ScriptsManager extends ApplicationComponent
 			}
 		)
 	)
-	private val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
 	private var compilationListeners = List[CompilationListener]()
 
 	def registerCompilationListener(listener: CompilationListener) {

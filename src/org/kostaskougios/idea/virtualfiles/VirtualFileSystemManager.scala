@@ -12,7 +12,8 @@ import org.scalaideaextension.vfs.VFSChangeListener
  */
 class VirtualFileSystemManager(scriptsManager: ScriptsManager) extends CompilationListener
 {
-	private var vfsChangeListeners = List[VFSChangeListener]()
+	private val sse = scriptsManager.scriptEngine
+	private var vfsChangeListeners = List[String]()
 
 	scriptsManager.registerCompilationListener(this)
 
@@ -20,12 +21,15 @@ class VirtualFileSystemManager(scriptsManager: ScriptsManager) extends Compilati
 	{
 		override def contentsChanged(event: VirtualFileEvent) = {
 			EventLog.info("file changed", event.getFileName)
-			vfsChangeListeners.foreach(_.contentsChanged(event))
+			vfsChangeListeners.map { className =>
+				val listener = sse.newInstance[VFSChangeListener](className)
+				listener.contentsChanged(event)
+			}
 		}
 	})
 
 	override def compilationCompleted(codeVersion: CodeVersion, registry: ClassRegistry) = {
-		vfsChangeListeners = registry.withTypeOf[VFSChangeListener].asInstanceOf[List[Class[VFSChangeListener]]].map(_.newInstance)
+		vfsChangeListeners = registry.withTypeOf[VFSChangeListener].map(_.getName)
 		EventLog.info(this, s"VFS change script listeners : ${vfsChangeListeners.size}")
 	}
 }

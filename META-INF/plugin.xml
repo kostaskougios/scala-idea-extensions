@@ -34,6 +34,12 @@
 		<component>
 			<implementation-class>org.kostaskougios.idea.virtualfiles.VirtualFileSystemManager</implementation-class>
 		</component>
+		<component>
+			<implementation-class>org.kostaskougios.idea.compilation.CompilationManager</implementation-class>
+		</component>
+		<component>
+			<implementation-class>org.kostaskougios.idea.projects.ProjectsManager</implementation-class>
+		</component>
 	</application-components>
 
 	<project-components>

@@ -5,6 +5,7 @@ import java.io.File
 import com.googlecode.scalascriptengine._
 import com.intellij.ide.plugins.cl.PluginClassLoader
 import com.intellij.openapi.components.ApplicationComponent
+import org.kostaskougios.idea.GlobalEnable
 import org.kostaskougios.idea.eventlog.EventLog
 import org.kostaskougios.idea.scheduling.Futures
 
@@ -14,7 +15,7 @@ import scala.collection.JavaConverters._
  * @author	kostas.kougios
  *            Date: 19/07/14
  */
-class ScriptsManager extends ApplicationComponent
+class ScriptsManager() extends ApplicationComponent
 {
 	private val userHome = System.getProperty("user.home")
 	private val sourcePath = SourcePath(new File(userHome, ".scala-idea-extensions/src/main/scala"))
@@ -33,8 +34,12 @@ class ScriptsManager extends ApplicationComponent
 		getClass.getClassLoader
 	)
 	// is is public so that plugins can re-compile scripts
-	val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
+	private val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
 	private var compilationListeners = List[CompilationListener]()
+
+	def script[T](className: String): Option[T] = if (GlobalEnable.isEnabled)
+		Some(scriptEngine.get[T](className).newInstance)
+	else None
 
 	def registerCompilationListener(listener: CompilationListener) {
 		synchronized {

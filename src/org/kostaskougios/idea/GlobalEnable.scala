@@ -11,9 +11,8 @@ import org.kostaskougios.idea.eventlog.EventLog
  */
 class GlobalEnable extends AnAction
 {
-	private val enabled = new AtomicBoolean(true)
 
-	def isEnabled = enabled.get
+	import org.kostaskougios.idea.GlobalEnable._
 
 	override def actionPerformed(e: AnActionEvent) {
 		enabled.set(!isEnabled)
@@ -21,4 +20,11 @@ class GlobalEnable extends AnAction
 			EventLog.info("scala-idea-extension", "All scripts are ON")
 		} else EventLog.info("scala-idea-extension", "All scripts are OFF")
 	}
+}
+
+object GlobalEnable
+{
+	private val enabled = new AtomicBoolean(true)
+
+	def isEnabled = enabled.get
 }

@@ -14,7 +14,6 @@ import org.scalaideaextension.compilation.ProjectCompilationListener
 class CompilationManager(scriptsManager: ScriptsManager) extends CompilationListener
 {
 	private var projectCompilationListeners = List[String]()
-	private val sse = scriptsManager.scriptEngine
 
 	scriptsManager.registerCompilationListener(this)
 
@@ -26,7 +25,7 @@ class CompilationManager(scriptsManager: ScriptsManager) extends CompilationList
 				override def execute(context: CompileContext) = {
 					if (context.getMessageCount(CompilerMessageCategory.ERROR) == 0) {
 						EventLog.trace(this, "Compilation finished successfully, invoking listeners.")
-						projectCompilationListeners.map(sse.newInstance[ProjectCompilationListener](_)).foreach {
+						projectCompilationListeners.flatMap(scriptsManager.script[ProjectCompilationListener](_)).foreach {
 							listener =>
 								try {
 									listener.success(context)

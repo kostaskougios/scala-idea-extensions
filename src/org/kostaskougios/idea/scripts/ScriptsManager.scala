@@ -17,7 +17,7 @@ import scala.collection.JavaConverters._
 class ScriptsManager extends ApplicationComponent
 {
 	private val userHome = System.getProperty("user.home")
-	private val sourcePath = SourcePath(new File(userHome, ".scala-idea-extensions"))
+	private val sourcePath = SourcePath(new File(userHome, ".scala-idea-extensions/src/main/scala"))
 	private val config = Config(
 		List(sourcePath),
 		currentClassPath,
@@ -62,7 +62,7 @@ class ScriptsManager extends ApplicationComponent
 	private def currentClassPath = {
 		// this tries to detect the classpath, if it doesn't work
 		// for you, please email me or open an issue explaining your
-		// usecase.
+		// use case.
 		def cp(cl: ClassLoader): Set[File] = cl match {
 			case ucl: PluginClassLoader =>
 				ucl.getUrls.asScala.map(u => new File(u.getFile)).toSet

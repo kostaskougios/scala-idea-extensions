@@ -19,12 +19,20 @@ object EventLog
 		System.out.println(msg)
 	}
 
+	def trace(that: Any, msg: => String) {
+		System.out.println(that.getClass.getSimpleName + ": " + msg)
+	}
+
 	def info(title: String, msg: String) {
 		val notification = new Notification("scala-idea-extensions", title, msg, NotificationType.INFORMATION)
 		Notifications.Bus.notify(notification)
 		Futures.scheduledExecution(2000) {
 			notification.expire()
 		}
+	}
+
+	def error(that: Any, msg: String, e: Throwable) {
+		error(that.getClass.getName, msg, e)
 	}
 
 	def error(title: String, msg: String, e: Throwable) {

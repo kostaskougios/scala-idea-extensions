@@ -47,6 +47,9 @@
 	</project-components>
 
 	<actions>
+		<action id="scala-idea-extensions.globalEnable" class="org.kostaskougios.idea.GlobalEnable" text="Enable/Disable Scala-Idea-Extensions" description="Enables or Disables execution of all scripts ">
+			<add-to-group group-id="ToolsMenu" anchor="last"/>
+		</action>
 	</actions>
 
 </idea-plugin>

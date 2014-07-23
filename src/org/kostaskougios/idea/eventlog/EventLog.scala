@@ -36,10 +36,12 @@ object EventLog
 	}
 
 	def error(title: String, msg: String, e: Throwable) {
-		e.printStackTrace()
-		val sw = new StringWriter
-		e.printStackTrace(new PrintWriter(sw))
-		val stackTrace = sw.toString
+		val stackTrace = if (e != null) {
+			e.printStackTrace()
+			val sw = new StringWriter
+			e.printStackTrace(new PrintWriter(sw))
+			sw.toString
+		}
 		val notification = new Notification("scala-idea-extensions", title, msg + "\n" + stackTrace, NotificationType.ERROR)
 		Notifications.Bus.notify(notification)
 	}

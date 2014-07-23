@@ -15,14 +15,17 @@ import scala.collection.JavaConverters._
  * @author	kostas.kougios
  *            Date: 19/07/14
  */
-class ScriptsManager() extends ApplicationComponent
+class ScriptsManager extends ApplicationComponent
 {
 	private val userHome = System.getProperty("user.home")
-	private val sourcePath = SourcePath(new File(userHome, ".scala-idea-extensions/src/main/scala"))
+	private val scriptsRootFolder = new File(userHome, ".scala-idea-extensions")
+	private val sourcePath = SourcePath(new File(scriptsRootFolder, "src/main/scala"))
+	private val libFolder = new File(scriptsRootFolder, "lib")
+	private val libs = libFolder.listFiles.filter(_.getName.endsWith(".jar")).toSet
 	private val config = Config(
 		List(sourcePath),
-		currentClassPath,
-		Set(),
+		currentClassPath ++ libs,
+		libs,
 		ClassLoaderConfig.Default.copy(enableClassRegistry = false),
 		List(
 			cv => {

@@ -3,6 +3,7 @@ package org.kostaskougios.idea.scripts
 import java.io.File
 
 import com.googlecode.scalascriptengine._
+import com.googlecode.scalascriptengine.classloading.ClassLoaderConfig
 import com.intellij.ide.plugins.cl.PluginClassLoader
 import com.intellij.openapi.components.ApplicationComponent
 import org.kostaskougios.idea.GlobalEnable

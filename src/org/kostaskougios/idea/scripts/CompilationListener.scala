@@ -1,6 +1,7 @@
 package org.kostaskougios.idea.scripts
 
 import com.googlecode.scalascriptengine.CodeVersion
+import com.googlecode.scalascriptengine.classloading.ClassRegistry
 
 /**
  * @author	kostas.kougios

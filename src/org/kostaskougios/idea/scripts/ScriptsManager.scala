@@ -3,7 +3,7 @@ package org.kostaskougios.idea.scripts
 import java.io.File
 
 import com.googlecode.scalascriptengine._
-import com.googlecode.scalascriptengine.classloading.ClassLoaderConfig
+import com.googlecode.scalascriptengine.classloading.{ClassLoaderConfig, ClassRegistry}
 import com.intellij.ide.plugins.cl.PluginClassLoader
 import com.intellij.openapi.components.ApplicationComponent
 import org.kostaskougios.idea.GlobalEnable
@@ -30,7 +30,7 @@ class ScriptsManager extends ApplicationComponent
 		ClassLoaderConfig.Default.copy(enableClassRegistry = false),
 		List(
 			cv => {
-				val registry = new ClassRegistry(Set(sourcePath.targetDir))
+				val registry = new ClassRegistry(getClass.getClassLoader, Set(sourcePath.targetDir))
 				EventLog.info(this, s"successfully compiled ${registry.allClasses.size} scripts to version ${cv.version}")
 				compilationListeners.foreach(_.compilationCompleted(cv, registry))
 			}

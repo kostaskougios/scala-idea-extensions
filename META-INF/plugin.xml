@@ -50,11 +50,11 @@
 	</project-components>
 
 	<actions>
-		<action id="scala-idea-extensions.globalEnable" class="org.kostaskougios.idea.GlobalEnable" text="Enable/Disable Scala-Idea-Extensions" description="Enables or Disables execution of all scripts ">
-			<add-to-group group-id="ToolsMenu" anchor="last"/>
+		<action id="scala-idea-extensions.globalEnable" class="org.kostaskougios.idea.GlobalEnable" text="Enable/Disable Scala-Idea-Extensions" description="Enables or Disables execution of all scripts">
+		<add-to-group group-id="ToolsMenu" anchor="last"/>
 		</action>
-		<action id="scala-idea-extensions.diagnostics" class="org.kostaskougios.idea.diagnostics.DiagnosticsMenu" text="Scala-Idea-Extensions Diagnostics" description="Enables or Disables execution of all scripts ">
-			<add-to-group group-id="ToolsMenu" anchor="last"/>
+		<action id="scala-idea-extensions.diagnostics" class="org.kostaskougios.idea.diagnostics.DiagnosticsMenu" text="Scala-Idea-Extensions Diagnostics" description="Diagnostics are dumped into the event log">
+		<add-to-group group-id="ToolsMenu" anchor="last"/>
 		</action>
 	</actions>
 

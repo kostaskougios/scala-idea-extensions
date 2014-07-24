@@ -40,6 +40,9 @@
 		<component>
 			<implementation-class>org.kostaskougios.idea.projects.ProjectsManager</implementation-class>
 		</component>
+		<component>
+			<implementation-class>org.kostaskougios.idea.diagnostics.DiagnosticsManager</implementation-class>
+		</component>
 	</application-components>
 
 	<project-components>
@@ -48,6 +51,9 @@
 
 	<actions>
 		<action id="scala-idea-extensions.globalEnable" class="org.kostaskougios.idea.GlobalEnable" text="Enable/Disable Scala-Idea-Extensions" description="Enables or Disables execution of all scripts ">
+			<add-to-group group-id="ToolsMenu" anchor="last"/>
+		</action>
+		<action id="scala-idea-extensions.diagnostics" class="org.kostaskougios.idea.diagnostics.DiagnosticsMenu" text="Scala-Idea-Extensions Diagnostics" description="Enables or Disables execution of all scripts ">
 			<add-to-group group-id="ToolsMenu" anchor="last"/>
 		</action>
 	</actions>

@@ -7,6 +7,7 @@ import com.googlecode.scalascriptengine.classloading.{ClassLoaderConfig, ClassRe
 import com.intellij.ide.plugins.cl.PluginClassLoader
 import com.intellij.openapi.components.ApplicationComponent
 import org.kostaskougios.idea.GlobalEnable
+import org.kostaskougios.idea.diagnostics.Diagnose
 import org.kostaskougios.idea.eventlog.EventLog
 import org.kostaskougios.idea.scheduling.Futures
 
@@ -16,10 +17,14 @@ import scala.collection.JavaConverters._
  * @author	kostas.kougios
  *            Date: 19/07/14
  */
-class ScriptsManager extends ApplicationComponent
+class ScriptsManager extends ApplicationComponent with Diagnose
 {
 	private val userHome = System.getProperty("user.home")
 	private val scriptsRootFolder = new File(userHome, ".scala-idea-extensions")
+
+	// make dirs if missing
+	scriptsRootFolder.mkdirs()
+
 	private val sourcePath = SourcePath(new File(scriptsRootFolder, "src/main/scala"))
 	private val libFolder = new File(scriptsRootFolder, "lib")
 	private val libs = libFolder.listFiles.filter(_.getName.endsWith(".jar")).toSet
@@ -78,7 +83,8 @@ class ScriptsManager extends ApplicationComponent
 		}
 		val path = try {
 			val cl = getClass.getClassLoader
-			cp(cl) ++ System.getProperty("java.class.path").split(File.pathSeparator).map(p => new File(p)).toSet
+			val fullCP = cp(cl) ++ System.getProperty("java.class.path").split(File.pathSeparator).map(p => new File(p)).toSet
+			fullCP
 		} catch {
 			case e: Throwable =>
 				e.printStackTrace()
@@ -87,4 +93,11 @@ class ScriptsManager extends ApplicationComponent
 		path
 	}
 
+	override def diagnose =
+		s"""
+		   |Compilation class path        :\n${config.compilationClassPaths.mkString("\n")}
+		   |ClassLoading class path       :\n${config.classLoadingClassPaths.mkString("\n")}
+		   |Scala Source Dirs class path  :\n${config.scalaSourceDirs.mkString("\n")}
+		   |Compiled classes output path  :\n${config.targetDirs.mkString("\n")}
+		 """.stripMargin
 }

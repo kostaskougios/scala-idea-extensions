@@ -1,6 +1,7 @@
 package org.kostaskougios.idea.scripts
 
 import java.io.File
+import java.net.URL
 
 import com.googlecode.scalascriptengine._
 import com.googlecode.scalascriptengine.classloading.{ClassLoaderConfig, ClassRegistry}
@@ -12,6 +13,7 @@ import org.kostaskougios.idea.scheduling.Futures
 import org.scalaideaextension.eventlog.EventLog
 
 import scala.collection.JavaConverters._
+import scala.language.reflectiveCalls
 
 /**
  * @author	kostas.kougios
@@ -79,11 +81,15 @@ class ScriptsManager extends ApplicationComponent with Diagnose
 		// use case.
 		def cp(cl: ClassLoader): Set[File] = cl match {
 			case ucl: PluginClassLoader =>
-				ucl.getUrls.asScala.map(u => new File(u.getFile)).toSet
+				// we need to use reflection cause our classloader has a different class of the same (!)
+				val reflCL = ucl.getClass.getClassLoader.asInstanceOf[ {def getUrls: java.util.List[URL]}]
+				val rootJars = reflCL.getUrls.asScala.map(u => new File(u.getFile))
+				ucl.getUrls.asScala.map(u => new File(u.getFile)).toSet ++ rootJars
 		}
 		val path = try {
 			val cl = getClass.getClassLoader
-			val fullCP = cp(cl) ++ System.getProperty("java.class.path").split(File.pathSeparator).map(p => new File(p)).toSet
+			//			val systemCP = System.getProperty("java.class.path").split(File.pathSeparator)
+			val fullCP = cp(cl) // ++ systemCP.map(p => new File(p)).toSet
 			fullCP
 		} catch {
 			case e: Throwable =>

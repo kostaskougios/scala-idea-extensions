@@ -15,12 +15,10 @@ object EventLog
 		info(that.getClass.getSimpleName, msg)
 	}
 
-	def trace(msg: => String) {
-		System.out.println(msg)
-	}
-
-	def trace(that: Any, msg: => String) {
-		System.out.println(that.getClass.getSimpleName + ": " + msg)
+	def trace(that: Any, msg: String) {
+		val notification = new Notification("scala-idea-extensions", that.getClass.getSimpleName, msg, NotificationType.INFORMATION)
+		notification.expire()
+		Notifications.Bus.notify(notification)
 	}
 
 	def info(title: String, msg: String) {

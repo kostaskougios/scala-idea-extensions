@@ -8,8 +8,8 @@ import com.intellij.ide.plugins.cl.PluginClassLoader
 import com.intellij.openapi.components.ApplicationComponent
 import org.kostaskougios.idea.GlobalEnable
 import org.kostaskougios.idea.diagnostics.Diagnose
-import org.kostaskougios.idea.eventlog.EventLog
 import org.kostaskougios.idea.scheduling.Futures
+import org.scalaideaextension.eventlog.EventLog
 
 import scala.collection.JavaConverters._
 

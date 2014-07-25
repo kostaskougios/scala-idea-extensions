@@ -3,7 +3,7 @@ package org.kostaskougios.idea
 import java.util.concurrent.atomic.AtomicBoolean
 
 import com.intellij.openapi.actionSystem.{AnAction, AnActionEvent}
-import org.kostaskougios.idea.eventlog.EventLog
+import org.scalaideaextension.eventlog.EventLog
 
 /**
  * @author	kostas.kougios

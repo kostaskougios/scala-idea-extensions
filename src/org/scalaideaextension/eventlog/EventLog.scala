@@ -1,4 +1,4 @@
-package org.kostaskougios.idea.eventlog
+package org.scalaideaextension.eventlog
 
 import java.io.{PrintWriter, StringWriter}
 

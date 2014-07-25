@@ -3,8 +3,8 @@ package org.kostaskougios.idea.virtualfiles
 import com.googlecode.scalascriptengine.CodeVersion
 import com.googlecode.scalascriptengine.classloading.ClassRegistry
 import com.intellij.openapi.vfs.{VirtualFileAdapter, VirtualFileEvent, VirtualFileManager}
-import org.kostaskougios.idea.eventlog.EventLog
 import org.kostaskougios.idea.scripts.{CompilationListener, ScriptsManager}
+import org.scalaideaextension.eventlog.EventLog
 import org.scalaideaextension.vfs.VFSChangeListener
 
 /**

@@ -4,9 +4,9 @@ import com.googlecode.scalascriptengine.CodeVersion
 import com.googlecode.scalascriptengine.classloading.ClassRegistry
 import com.intellij.openapi.compiler._
 import com.intellij.openapi.project.Project
-import org.kostaskougios.idea.eventlog.EventLog
 import org.kostaskougios.idea.scripts.{CompilationListener, ScriptsManager}
 import org.scalaideaextension.compilation.ProjectCompilationListener
+import org.scalaideaextension.eventlog.EventLog
 
 /**
  * @author	kostas.kougios

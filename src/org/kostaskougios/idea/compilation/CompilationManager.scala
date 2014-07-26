@@ -43,6 +43,6 @@ class CompilationManager(scriptsManager: ScriptsManager) extends CompilationList
 
 	override def compilationCompleted(codeVersion: CodeVersion, registry: ClassRegistry) {
 		projectCompilationListeners = registry.withTypeOf[ProjectCompilationListener].map(_.getName)
-		EventLog.info(this, s"Project compilation script listeners : ${projectCompilationListeners.size}")
+		EventLog.info(this, s"Project compilation script listeners : ${projectCompilationListeners.mkString(",")}")
 	}
 }

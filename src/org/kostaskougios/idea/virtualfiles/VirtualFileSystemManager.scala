@@ -31,6 +31,6 @@ class VirtualFileSystemManager(scriptsManager: ScriptsManager) extends Compilati
 
 	override def compilationCompleted(codeVersion: CodeVersion, registry: ClassRegistry) = {
 		vfsChangeListeners = registry.withTypeOf[VFSChangeListener].map(_.getName)
-		EventLog.info(this, s"VFS change script listeners : ${vfsChangeListeners.size}")
+		EventLog.info(this, s"VFS change script listeners : ${vfsChangeListeners.mkString(",")}")
 	}
 }

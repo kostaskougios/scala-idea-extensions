@@ -32,9 +32,6 @@
 			<implementation-class>org.kostaskougios.idea.scripts.ScriptsManager</implementation-class>
 		</component>
 		<component>
-			<implementation-class>org.kostaskougios.idea.virtualfiles.VirtualFileSystemManager</implementation-class>
-		</component>
-		<component>
 			<implementation-class>org.kostaskougios.idea.compilation.CompilationManager</implementation-class>
 		</component>
 		<component>
@@ -46,8 +43,13 @@
 	</application-components>
 
 	<project-components>
-		<!-- Add your project components here -->
 	</project-components>
+
+	<module-components>
+		<component>
+			<implementation-class>org.kostaskougios.idea.virtualfiles.VirtualFileSystemManager</implementation-class>
+		</component>
+	</module-components>
 
 	<actions>
 		<action id="scala-idea-extensions.globalEnable" class="org.kostaskougios.idea.GlobalEnable" text="Enable/Disable Scala-Idea-Extensions" description="Enables or Disables execution of all scripts">

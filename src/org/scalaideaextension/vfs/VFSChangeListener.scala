@@ -1,5 +1,6 @@
 package org.scalaideaextension.vfs
 
+import com.intellij.openapi.module.Module
 import com.intellij.openapi.vfs.VirtualFileEvent
 
 /**
@@ -8,5 +9,5 @@ import com.intellij.openapi.vfs.VirtualFileEvent
  */
 trait VFSChangeListener
 {
-	def contentsChanged(event: VirtualFileEvent)
+	def contentsChanged(module: Module, event: VirtualFileEvent)
 }

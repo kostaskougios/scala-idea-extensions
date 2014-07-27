@@ -1,6 +1,6 @@
 package org.scalaideaextension.vfs
 
-import com.intellij.openapi.project.Project
+import com.intellij.openapi.module.Module
 import com.intellij.openapi.vfs.VirtualFile
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{FunSuite, Matchers}
@@ -13,24 +13,24 @@ class ChangeTrackerSuite extends FunSuite with Matchers with MockitoSugar
 {
 	test("tracks") {
 		val tracker = ChangeTracker.empty
-		val project = mock[Project]
+		val module = mock[Module]
 		val file1 = mock[VirtualFile]
 		val file2 = mock[VirtualFile]
-		tracker.track(project, file1)
-		tracker.track(project, file2)
+		tracker.track(module, file1)
+		tracker.track(module, file2)
 
-		tracker(project) should be(Set(file1, file2))
+		tracker(module) should be(Set(file1, file2))
 	}
 
 	test("modifiedFilesSinceLastCall") {
 		val tracker = ChangeTracker.empty
-		val project = mock[Project]
+		val module = mock[Module]
 		val file1 = mock[VirtualFile]
 		val file2 = mock[VirtualFile]
-		tracker.track(project, file1)
-		tracker.track(project, file2)
+		tracker.track(module, file1)
+		tracker.track(module, file2)
 
-		tracker.modifiedFilesSinceLastCall(project) should be(Set(file1, file2))
-		tracker(project) should be(Set())
+		tracker.modifiedFilesSinceLastCall(module) should be(Set(file1, file2))
+		tracker(module) should be(Set())
 	}
 }

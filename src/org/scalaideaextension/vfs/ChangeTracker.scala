@@ -1,6 +1,6 @@
 package org.scalaideaextension.vfs
 
-import com.intellij.openapi.project.Project
+import com.intellij.openapi.module.Module
 import com.intellij.openapi.vfs.VirtualFile
 
 /**
@@ -11,19 +11,19 @@ import com.intellij.openapi.vfs.VirtualFile
  */
 class ChangeTracker private()
 {
-	private val m = collection.mutable.HashMap.empty[Project, Set[VirtualFile]].withDefault(_ => Set())
+	private val m = collection.mutable.HashMap.empty[Module, Set[VirtualFile]].withDefault(_ => Set())
 
-	def track(project: Project, vf: VirtualFile) {
+	def track(module: Module, vf: VirtualFile) {
 		synchronized {
-			m(project) += vf
+			m(module) += vf
 		}
 	}
 
-	def apply(project: Project) = m(project)
+	def apply(module: Module) = m(module)
 
-	def modifiedFilesSinceLastCall(project: Project): Set[VirtualFile] = synchronized {
-		val files = m(project)
-		m(project) = Set()
+	def modifiedFilesSinceLastCall(module: Module): Set[VirtualFile] = synchronized {
+		val files = m(module)
+		m(module) = Set()
 		files
 	}
 }

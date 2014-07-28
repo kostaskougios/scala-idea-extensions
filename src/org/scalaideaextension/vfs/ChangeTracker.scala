@@ -26,6 +26,8 @@ class ChangeTracker private()
 		m(module) = Set()
 		files
 	}
+
+	def isChangedSinceLastCall(module: Module): Boolean = !modifiedFilesSinceLastCall(module).isEmpty
 }
 
 object ChangeTracker

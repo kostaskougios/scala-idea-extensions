@@ -25,6 +25,12 @@ class VirtualFileSystemManager(scriptsManager: ScriptsManager, module: Module) e
 	}
 
 	override def projectOpened() {
+	}
+
+	override def projectClosed() {
+	}
+
+	override def initComponent() {
 		VirtualFileManager.getInstance.addVirtualFileListener(new VirtualFileAdapter()
 		{
 			override def contentsChanged(event: VirtualFileEvent) = {
@@ -36,13 +42,6 @@ class VirtualFileSystemManager(scriptsManager: ScriptsManager, module: Module) e
 				}
 			}
 		})
-	}
-
-	override def projectClosed() {
-
-	}
-
-	override def initComponent() {
 	}
 
 	override def disposeComponent() {}

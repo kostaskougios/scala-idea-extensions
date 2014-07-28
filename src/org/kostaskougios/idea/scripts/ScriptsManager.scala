@@ -1,19 +1,14 @@
 package org.kostaskougios.idea.scripts
 
 import java.io.File
-import java.net.URL
 
 import com.googlecode.scalascriptengine._
 import com.googlecode.scalascriptengine.classloading.{ClassLoaderConfig, ClassRegistry}
-import com.intellij.ide.plugins.cl.PluginClassLoader
 import com.intellij.openapi.components.ApplicationComponent
 import org.kostaskougios.idea.GlobalEnable
 import org.kostaskougios.idea.diagnostics.Diagnose
 import org.kostaskougios.idea.scheduling.Futures
 import org.scalaideaextension.eventlog.EventLog
-
-import scala.collection.JavaConverters._
-import scala.language.reflectiveCalls
 
 /**
  * @author	kostas.kougios
@@ -30,6 +25,13 @@ class ScriptsManager extends ApplicationComponent with Diagnose
 	private val sourcePath = SourcePath(new File(scriptsRootFolder, "src/main/scala"))
 	private val libFolder = new File(scriptsRootFolder, "lib")
 	private val libs = libFolder.listFiles.filter(_.getName.endsWith(".jar")).toSet
+	private val currentClassPath = try {
+		ClassPathExtractor.currentClassPath(getClass.getClassLoader)
+	} catch {
+		case e: Throwable =>
+			e.printStackTrace()
+			Set[File]()
+	}
 	private val config = Config(
 		List(sourcePath),
 		currentClassPath ++ libs,
@@ -74,30 +76,6 @@ class ScriptsManager extends ApplicationComponent with Diagnose
 	}
 
 	override def getComponentName = "ScriptsManager"
-
-	private def currentClassPath = {
-		// this tries to detect the classpath, if it doesn't work
-		// for you, please email me or open an issue explaining your
-		// use case.
-		def cp(cl: ClassLoader): Set[File] = cl match {
-			case ucl: PluginClassLoader =>
-				// we need to use reflection cause our classloader has a different class of the same (!)
-				val reflCL = ucl.getClass.getClassLoader.asInstanceOf[ {def getUrls: java.util.List[URL]}]
-				val rootJars = reflCL.getUrls.asScala.map(u => new File(u.getFile))
-				ucl.getUrls.asScala.map(u => new File(u.getFile)).toSet ++ rootJars
-		}
-		val path = try {
-			val cl = getClass.getClassLoader
-			//			val systemCP = System.getProperty("java.class.path").split(File.pathSeparator)
-			val fullCP = cp(cl) // ++ systemCP.map(p => new File(p)).toSet
-			fullCP
-		} catch {
-			case e: Throwable =>
-				e.printStackTrace()
-				Set[File]()
-		}
-		path
-	}
 
 	override def diagnose =
 		s"""

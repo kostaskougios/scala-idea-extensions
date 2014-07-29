@@ -16,7 +16,7 @@ class CompilationManager(scriptsManager: ScriptsManager) extends CompilationList
 {
 	private var projectCompilationListeners = List[String]()
 
-	scriptsManager.registerCompilationListener(this)
+	//	scriptsManager.registerCompilationListener(this)
 
 	def projectOpened(project: Project) {
 		val compilerManager = CompilerManager.getInstance(project)

@@ -14,7 +14,7 @@ import org.scalaideaextension.eventlog.EventLog
  * @author	kostas.kougios
  *            Date: 19/07/14
  */
-class ScriptsManager extends ApplicationComponent with Diagnose
+class ScriptsManager(compilationListeners: Array[CompilationListener]) extends ApplicationComponent with Diagnose
 {
 	private val userHome = System.getProperty("user.home")
 	private val scriptsRootFolder = new File(userHome, ".scala-idea-extensions")
@@ -46,19 +46,18 @@ class ScriptsManager extends ApplicationComponent with Diagnose
 		),
 		getClass.getClassLoader
 	)
-	// is is public so that plugins can re-compile scripts
 	private val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
-	private var compilationListeners = List[CompilationListener]()
+	//	private var compilationListeners = List[CompilationListener]()
 
 	def script[T](className: String): Option[T] = if (GlobalEnable.isEnabled)
 		Some(scriptEngine.get[T](className).newInstance)
 	else None
 
-	def registerCompilationListener(listener: CompilationListener) {
-		synchronized {
-			compilationListeners = listener :: compilationListeners
-		}
-	}
+	//	def registerCompilationListener(listener: CompilationListener) {
+	//		synchronized {
+	//			compilationListeners = listener :: compilationListeners
+	//		}
+	//	}
 
 	override def initComponent() {
 		Futures.backgroundExecution {

@@ -3,21 +3,23 @@ package org.kostaskougios.idea.virtualfiles
 import com.googlecode.scalascriptengine.CodeVersion
 import com.googlecode.scalascriptengine.classloading.ClassRegistry
 import com.intellij.openapi.components.ProjectComponent
-import com.intellij.openapi.module.Module
+import com.intellij.openapi.module.ModuleManager
+import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.vfs.{VirtualFileAdapter, VirtualFileEvent, VirtualFileManager}
 import org.kostaskougios.idea.scripts.{CompilationListener, ScriptsManager}
 import org.scalaideaextension.eventlog.EventLog
+import org.scalaideaextension.modules.ModuleUtils
 import org.scalaideaextension.vfs.VFSChangeListener
 
 /**
  * @author	kostas.kougios
  *            Date: 20/07/14
  */
-class VirtualFileSystemManager(scriptsManager: ScriptsManager, module: Module) extends CompilationListener with ProjectComponent
+class VirtualFileSystemManager(scriptsManager: ScriptsManager, projectManager: ProjectManager) extends CompilationListener with ProjectComponent
 {
 	private var vfsChangeListeners = List[String]()
 
-	scriptsManager.registerCompilationListener(this)
+	//	scriptsManager.registerCompilationListener(this)
 
 	override def compilationCompleted(codeVersion: CodeVersion, registry: ClassRegistry) = {
 		vfsChangeListeners = registry.withTypeOf[VFSChangeListener].map(_.getName)
@@ -34,11 +36,18 @@ class VirtualFileSystemManager(scriptsManager: ScriptsManager, module: Module) e
 		VirtualFileManager.getInstance.addVirtualFileListener(new VirtualFileAdapter()
 		{
 			override def contentsChanged(event: VirtualFileEvent) = {
-				vfsChangeListeners.flatMap { className =>
-					scriptsManager.script[VFSChangeListener](className)
-				}.foreach {
-					listener =>
-						listener.contentsChanged(module, event)
+				val openProjects = projectManager.getOpenProjects
+				for (project <- openProjects) {
+					val modules = ModuleManager.getInstance(project).getModules
+
+					val belongsToModules = modules.filter(module => ModuleUtils.isModulesFile(module, event.getFile)).toList
+
+					vfsChangeListeners.flatMap { className =>
+						scriptsManager.script[VFSChangeListener](className)
+					}.foreach {
+						listener =>
+							listener.contentsChanged(belongsToModules, event)
+					}
 				}
 			}
 		})

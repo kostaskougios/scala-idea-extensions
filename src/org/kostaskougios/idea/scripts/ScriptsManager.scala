@@ -46,18 +46,10 @@ class ScriptsManager(compilationListeners: Array[CompilationListener]) extends A
 		),
 		getClass.getClassLoader
 	)
-	private val scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
-	//	private var compilationListeners = List[CompilationListener]()
 
-	def script[T](className: String): Option[T] = if (GlobalEnable.isEnabled)
-		Some(scriptEngine.get[T](className).newInstance)
-	else None
+	import org.kostaskougios.idea.scripts.ScriptsManager._
 
-	//	def registerCompilationListener(listener: CompilationListener) {
-	//		synchronized {
-	//			compilationListeners = listener :: compilationListeners
-	//		}
-	//	}
+	scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
 
 	override def initComponent() {
 		Futures.backgroundExecution {
@@ -83,4 +75,13 @@ class ScriptsManager(compilationListeners: Array[CompilationListener]) extends A
 		   |Scala Source Dirs class path  :\n${config.scalaSourceDirs.mkString("\n")}
 		   |Compiled classes output path  :\n${config.targetDirs.mkString("\n")}
 		 """.stripMargin
+}
+
+object ScriptsManager
+{
+	private var scriptEngine: ScalaScriptEngine = _
+
+	def script[T](className: String): Option[T] = if (GlobalEnable.isEnabled)
+		Some(scriptEngine.get[T](className).newInstance)
+	else None
 }

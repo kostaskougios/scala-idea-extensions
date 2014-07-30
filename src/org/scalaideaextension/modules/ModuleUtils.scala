@@ -1,8 +1,8 @@
 package org.scalaideaextension.modules
 
-import com.intellij.openapi.module.Module
+import com.intellij.openapi.module.{Module, ModuleUtilCore}
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import org.scalaideaextension.vfs.VirtualFileUtils
 
 /**
  * @author	kostas.kougios
@@ -10,5 +10,5 @@ import org.scalaideaextension.vfs.VirtualFileUtils
  */
 object ModuleUtils
 {
-	def isModulesFile(module: Module, file: VirtualFile): Boolean = VirtualFileUtils.isChildOfOrSameAs(module.getModuleFile, file)
+	def moduleForFile(project: Project, file: VirtualFile): Option[Module] = Option(ModuleUtilCore.findModuleForFile(file, project))
 }

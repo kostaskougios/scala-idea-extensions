@@ -12,7 +12,7 @@ import org.scalaideaextension.eventlog.EventLog
  * @author	kostas.kougios
  *            Date: 22/07/14
  */
-class CompilationManager(scriptsManager: ScriptsManager) extends CompilationListener
+class CompilationManager extends CompilationListener
 {
 	private var projectCompilationListeners = List[String]()
 
@@ -26,7 +26,7 @@ class CompilationManager(scriptsManager: ScriptsManager) extends CompilationList
 				override def execute(context: CompileContext) = {
 					if (context.getMessageCount(CompilerMessageCategory.ERROR) == 0) {
 						EventLog.trace(this, "Compilation finished successfully, invoking listeners.")
-						projectCompilationListeners.flatMap(scriptsManager.script[ProjectCompilationListener](_)).foreach {
+						projectCompilationListeners.flatMap(ScriptsManager.script[ProjectCompilationListener](_)).foreach {
 							listener =>
 								try {
 									listener.success(context)

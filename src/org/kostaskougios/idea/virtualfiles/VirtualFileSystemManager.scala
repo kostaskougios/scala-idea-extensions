@@ -3,7 +3,6 @@ package org.kostaskougios.idea.virtualfiles
 import com.googlecode.scalascriptengine.CodeVersion
 import com.googlecode.scalascriptengine.classloading.ClassRegistry
 import com.intellij.openapi.components.ProjectComponent
-import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.vfs.{VirtualFileAdapter, VirtualFileEvent, VirtualFileManager}
 import org.kostaskougios.idea.scripts.{CompilationListener, ScriptsManager}
@@ -15,7 +14,7 @@ import org.scalaideaextension.vfs.VFSChangeListener
  * @author	kostas.kougios
  *            Date: 20/07/14
  */
-class VirtualFileSystemManager(scriptsManager: ScriptsManager, projectManager: ProjectManager) extends CompilationListener with ProjectComponent
+class VirtualFileSystemManager(projectManager: ProjectManager) extends CompilationListener with ProjectComponent
 {
 	private var vfsChangeListeners = List[String]()
 
@@ -38,15 +37,16 @@ class VirtualFileSystemManager(scriptsManager: ScriptsManager, projectManager: P
 			override def contentsChanged(event: VirtualFileEvent) = {
 				val openProjects = projectManager.getOpenProjects
 				for (project <- openProjects) {
-					val modules = ModuleManager.getInstance(project).getModules
+					val moduleO = ModuleUtils.moduleForFile(project, event.getFile)
 
-					val belongsToModules = modules.filter(module => ModuleUtils.isModulesFile(module, event.getFile)).toList
-
-					vfsChangeListeners.flatMap { className =>
-						scriptsManager.script[VFSChangeListener](className)
-					}.foreach {
-						listener =>
-							listener.contentsChanged(belongsToModules, event)
+					moduleO.foreach {
+						module =>
+							vfsChangeListeners.flatMap { className =>
+								ScriptsManager.script[VFSChangeListener](className)
+							}.foreach {
+								listener =>
+									listener.contentsChanged(module :: Nil, event)
+							}
 					}
 				}
 			}

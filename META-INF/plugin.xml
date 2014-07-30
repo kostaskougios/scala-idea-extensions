@@ -40,15 +40,15 @@
 		<component>
 			<implementation-class>org.kostaskougios.idea.diagnostics.DiagnosticsManager</implementation-class>
 		</component>
+		<component>
+			<implementation-class>org.kostaskougios.idea.virtualfiles.VirtualFileSystemManager</implementation-class>
+		</component>
 	</application-components>
 
 	<project-components>
 	</project-components>
 
 	<module-components>
-		<component>
-			<implementation-class>org.kostaskougios.idea.virtualfiles.VirtualFileSystemManager</implementation-class>
-		</component>
 	</module-components>
 
 	<actions>

@@ -9,5 +9,5 @@ import com.intellij.openapi.vfs.VirtualFileEvent
  */
 trait VFSChangeListener
 {
-	def contentsChanged(modules: List[Module], event: VirtualFileEvent)
+	def contentsChanged(module: Module, event: VirtualFileEvent)
 }

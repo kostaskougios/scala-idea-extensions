@@ -30,7 +30,7 @@ class VirtualFileSystemManager(projectManager: ProjectManager) extends Compilati
 							ScriptsManager.script[VFSChangeListener](className)
 						}.foreach {
 							listener =>
-								listener.contentsChanged(module :: Nil, event)
+								listener.contentsChanged(module, event)
 						}
 				}
 			}

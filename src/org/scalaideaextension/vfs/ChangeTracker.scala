@@ -36,7 +36,7 @@ class ChangeTracker private()
 	 * @param module	the module
 	 * @return			a set of files
 	 */
-	def modifiedFilesSinceLastCall(module: Module): Set[VirtualFile] = synchronized {
+	def trackedFilesSinceLastCall(module: Module): Set[VirtualFile] = synchronized {
 		val files = m(module)
 		m(module) = Set()
 		files
@@ -49,7 +49,7 @@ class ChangeTracker private()
 	 * @param module	the module
 	 * @return			true if there was at list 1 file tracked for this module,
 	 */
-	def isChangedSinceLastCall(module: Module): Boolean = !modifiedFilesSinceLastCall(module).isEmpty
+	def isTrackedSinceLastCall(module: Module): Boolean = !trackedFilesSinceLastCall(module).isEmpty
 }
 
 object ChangeTracker

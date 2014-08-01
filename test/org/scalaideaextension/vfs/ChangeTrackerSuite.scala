@@ -30,7 +30,7 @@ class ChangeTrackerSuite extends FunSuite with Matchers with MockitoSugar
 		tracker.track(module, file1)
 		tracker.track(module, file2)
 
-		tracker.modifiedFilesSinceLastCall(module) should be(Set(file1, file2))
+		tracker.trackedFilesSinceLastCall(module) should be(Set(file1, file2))
 		tracker(module) should be(Set())
 	}
 
@@ -42,7 +42,7 @@ class ChangeTrackerSuite extends FunSuite with Matchers with MockitoSugar
 		tracker.track(module, file1)
 		tracker.track(module, file2)
 
-		tracker.isChangedSinceLastCall(module) should be(true)
-		tracker.isChangedSinceLastCall(module) should be(false)
+		tracker.isTrackedSinceLastCall(module) should be(true)
+		tracker.isTrackedSinceLastCall(module) should be(false)
 	}
 }

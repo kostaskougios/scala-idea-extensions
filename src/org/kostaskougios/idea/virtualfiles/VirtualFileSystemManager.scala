@@ -28,11 +28,11 @@ class VirtualFileSystemManager(projectManager: ProjectManager) extends Compilati
 
 				moduleO.foreach {
 					module =>
-						vfsChangeListeners.flatMap { className =>
-							ScriptsManager.script[VFSChangeListener](className)
-						}.foreach {
-							listener =>
-								listener.contentsChanged(module, event)
+						vfsChangeListeners.foreach { className =>
+							ScriptsManager.script[VFSChangeListener](className) {
+								listener =>
+									listener.contentsChanged(module, event)
+							}
 						}
 				}
 			}

@@ -87,7 +87,10 @@ object ScriptsManager
 {
 	private var scriptEngine: ScalaScriptEngine = _
 
-	def script[T](className: String): Option[T] = if (GlobalEnable.isEnabled)
-		Some(scriptEngine.get[T](className).newInstance)
-	else None
+	def script[T](className: String)(runner: T => Unit) {
+		if (GlobalEnable.isEnabled) {
+			val script = scriptEngine.get[T](className).newInstance
+			runner(script)
+		}
+	}
 }

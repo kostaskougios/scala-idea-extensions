@@ -11,6 +11,8 @@ import org.kostaskougios.idea.scheduling.Futures
 import org.scalaideaextension.eventlog.EventLog
 
 /**
+ * manages compilation of the scala scripts
+ *
  * @author	kostas.kougios
  *            Date: 19/07/14
  */

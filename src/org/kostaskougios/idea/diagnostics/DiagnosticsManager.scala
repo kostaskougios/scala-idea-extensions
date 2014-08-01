@@ -1,6 +1,8 @@
 package org.kostaskougios.idea.diagnostics
 
 /**
+ * provides diagnostic details as a string
+ *
  * @author	kostas.kougios
  *            Date: 24/07/14
  */

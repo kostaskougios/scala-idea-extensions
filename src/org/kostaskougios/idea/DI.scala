@@ -6,6 +6,8 @@ import scala.collection.JavaConverters._
 import scala.reflect.ClassTag
 
 /**
+ * dependency injection utilities
+ *
  * @author	kostas.kougios
  *            Date: 25/07/14
  */

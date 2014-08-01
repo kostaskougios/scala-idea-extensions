@@ -5,6 +5,8 @@ import org.kostaskougios.idea.DI
 import org.scalaideaextension.eventlog.EventLog
 
 /**
+ * the menu to dump diagnostics into the event log of intellij
+ *
  * @author	kostas.kougios
  *            Date: 24/07/14
  */

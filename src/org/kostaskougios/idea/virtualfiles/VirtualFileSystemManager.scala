@@ -10,6 +10,8 @@ import org.scalaideaextension.modules.ModuleUtils
 import org.scalaideaextension.vfs.VFSChangeListener
 
 /**
+ * manages scripts that require VirtualFile support i.e. modification listeners
+ *
  * @author	kostas.kougios
  *            Date: 20/07/14
  */

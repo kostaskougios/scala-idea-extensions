@@ -9,6 +9,9 @@ import scala.collection.JavaConverters._
 import scala.language.reflectiveCalls
 
 /**
+ * a best effort attempt to get the correct classpath for script compilation
+ * and execution
+ *
  * @author	kostas.kougios
  *            Date: 28/07/14
  */

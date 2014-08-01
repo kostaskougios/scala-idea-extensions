@@ -4,6 +4,8 @@ import com.intellij.openapi.project.{Project, ProjectManager, ProjectManagerList
 import org.kostaskougios.idea.compilation.CompilationManager
 
 /**
+ * helps other components to manage project events
+ *
  * @author	kostas.kougios
  *            Date: 22/07/14
  */

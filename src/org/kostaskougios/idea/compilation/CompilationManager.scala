@@ -9,6 +9,8 @@ import org.scalaideaextension.compilation.ProjectCompilationListener
 import org.scalaideaextension.eventlog.EventLog
 
 /**
+ * invokes scripts that listen for compilation events
+ *
  * @author	kostas.kougios
  *            Date: 22/07/14
  */

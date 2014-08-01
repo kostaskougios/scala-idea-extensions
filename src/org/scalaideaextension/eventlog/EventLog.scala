@@ -6,6 +6,8 @@ import com.intellij.notification.{Notification, NotificationType, Notifications}
 import org.kostaskougios.idea.scheduling.Futures
 
 /**
+ * log events to intellij's Event Log
+ *
  * @author	kostas.kougios
  *            Date: 19/07/14
  */

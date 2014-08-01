@@ -31,6 +31,7 @@ class ScriptsManager(compilationListeners: Array[CompilationListener]) extends A
 		ClassPathExtractor.currentClassPath(getClass.getClassLoader)
 	} catch {
 		case e: Throwable =>
+			EventLog.error(this, "error getting the classpath for compilation", e)
 			e.printStackTrace()
 			Set[File]()
 	}
@@ -60,15 +61,14 @@ class ScriptsManager(compilationListeners: Array[CompilationListener]) extends A
 	def forceRefresh() {
 		Futures.backgroundExecution {
 			try {
-				scriptEngine.markAllAsModified()
-				scriptEngine.deleteAllClassesInOutputDirectory()
-				scriptEngine.refresh
+				scriptEngine.cleanBuild
 			} catch {
 				case e: Throwable =>
 					EventLog.error("Script Compilation Error", "Error compiling classes in script directory:", e)
 			}
 		}
 	}
+
 	override def disposeComponent() {
 	}
 

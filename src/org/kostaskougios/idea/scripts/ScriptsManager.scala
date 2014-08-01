@@ -54,8 +54,13 @@ class ScriptsManager(compilationListeners: Array[CompilationListener]) extends A
 	scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
 
 	override def initComponent() {
+		forceRefresh()
+	}
+
+	def forceRefresh() {
 		Futures.backgroundExecution {
 			try {
+				scriptEngine.markAllAsModified()
 				scriptEngine.deleteAllClassesInOutputDirectory()
 				scriptEngine.refresh
 			} catch {
@@ -64,7 +69,6 @@ class ScriptsManager(compilationListeners: Array[CompilationListener]) extends A
 			}
 		}
 	}
-
 	override def disposeComponent() {
 	}
 

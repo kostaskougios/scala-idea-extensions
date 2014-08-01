@@ -8,6 +8,7 @@ import com.intellij.openapi.components.ApplicationComponent
 import org.kostaskougios.idea.GlobalEnable
 import org.kostaskougios.idea.diagnostics.Diagnose
 import org.kostaskougios.idea.scheduling.Futures
+import org.scalaideaextension.environment.{Env, ScriptEnvironment}
 import org.scalaideaextension.eventlog.EventLog
 
 /**
@@ -18,8 +19,8 @@ import org.scalaideaextension.eventlog.EventLog
  */
 class ScriptsManager(compilationListeners: Array[CompilationListener]) extends ApplicationComponent with Diagnose
 {
-	private val userHome = System.getProperty("user.home")
-	private val scriptsRootFolder = new File(userHome, ".scala-idea-extensions")
+
+	import org.kostaskougios.idea.scripts.ScriptsManager._
 
 	// make dirs if missing
 	scriptsRootFolder.mkdirs()
@@ -50,7 +51,6 @@ class ScriptsManager(compilationListeners: Array[CompilationListener]) extends A
 		getClass.getClassLoader
 	)
 
-	import org.kostaskougios.idea.scripts.ScriptsManager._
 
 	scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
 
@@ -85,12 +85,19 @@ class ScriptsManager(compilationListeners: Array[CompilationListener]) extends A
 
 object ScriptsManager
 {
+	private val userHome = System.getProperty("user.home")
+	private val scriptsRootFolder = new File(userHome, ".scala-idea-extensions")
 	private var scriptEngine: ScalaScriptEngine = _
 
 	def script[T](className: String)(runner: T => Unit) {
 		if (GlobalEnable.isEnabled) {
-			val script = scriptEngine.get[T](className).newInstance
-			runner(script)
+			Env.set(ScriptEnvironment(scriptsRootFolder))
+			try {
+				val script = scriptEngine.get[T](className).newInstance
+				runner(script)
+			} finally {
+				Env.set(null)
+			}
 		}
 	}
 }

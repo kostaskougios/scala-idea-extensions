@@ -89,15 +89,15 @@ object ScriptsManager
 	private val scriptsRootFolder = new File(userHome, ".scala-idea-extensions")
 	private var scriptEngine: ScalaScriptEngine = _
 
-	def script[T](className: String)(runner: T => Unit) {
+	def script[T, R](className: String)(runner: T => R): Option[R] = {
 		if (GlobalEnable.isEnabled) {
 			Env.set(ScriptEnvironment(scriptsRootFolder))
 			try {
 				val script = scriptEngine.get[T](className).newInstance
-				runner(script)
+				Option(runner(script))
 			} finally {
 				Env.set(null)
 			}
-		}
+		} else None
 	}
 }

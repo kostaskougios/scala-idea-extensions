@@ -26,7 +26,7 @@ class CompilationManager extends CompilationListener
 				override def execute(context: CompileContext) = {
 					if (context.getMessageCount(CompilerMessageCategory.ERROR) == 0) {
 						EventLog.trace(this, "Compilation finished successfully, invoking listeners.")
-						projectCompilationListeners.foreach(ScriptsManager.script[ProjectCompilationListener](_) {
+						projectCompilationListeners.foreach(ScriptsManager.script[ProjectCompilationListener, Unit](_) {
 							listener =>
 								try {
 									listener.success(context)

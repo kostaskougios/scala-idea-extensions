@@ -24,6 +24,9 @@ object ClassPathExtractor
 				val reflCL = pcl.getClass.getClassLoader.asInstanceOf[ {def getUrls: java.util.List[URL]}]
 				val rootUrls = reflCL.getUrls.asScala
 				urlsToFiles(pcl.getUrls.asScala).toSet ++ urlsToFiles(rootUrls)
+			case cl: java.net.URLClassLoader =>
+				// this is for test cases
+				urlsToFiles(cl.getURLs).toSet
 		}
 
 	def urlsToFiles(urls: Traversable[URL]) = urls.map(u => new File(u.toURI))

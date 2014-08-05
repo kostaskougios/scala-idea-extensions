@@ -5,6 +5,8 @@ import java.io.File
 import com.intellij.testFramework.fixtures.JavaCodeInsightFixtureTestCase
 
 /**
+ * works around setting up intellij for testing via their base test cases
+ *
  * @author	kostas.kougios
  *            Date: 05/08/14
  */
@@ -15,6 +17,10 @@ class TestSetup(name: String) extends JavaCodeInsightFixtureTestCase
 
 	def init() {
 		setUp()
+	}
+
+	def done() {
+		tearDown()
 	}
 
 	override def getHomePath = {

@@ -89,6 +89,10 @@ object ScriptsManager
 	private val scriptsRootFolder = new File(userHome, ".scala-idea-extensions")
 	private var scriptEngine: ScalaScriptEngine = _
 
+	def waitInitialCompilation() {
+		while (scriptEngine.versionNumber == 0) Thread.sleep(10)
+	}
+
 	def script[T, R](className: String)(runner: T => R): Option[R] = {
 		if (GlobalEnable.isEnabled) {
 			Env.set(ScriptEnvironment(scriptsRootFolder))

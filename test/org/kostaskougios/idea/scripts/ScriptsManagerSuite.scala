@@ -12,7 +12,7 @@ import org.scalatest.junit.JUnitRunner
 class ScriptsManagerSuite extends BaseEndToEndSuite
 {
 	test("compiles ok") {
-		val scriptManager = new ScriptsManager(Array())
+		ScriptsManager.waitInitialCompilation()
 		val o = ScriptsManager.script[String => String, String]("unittests.scripts.A")(
 			i =>
 				i("x")

@@ -6,7 +6,7 @@ import org.scalatest.{BeforeAndAfterAll, FunSuite, Matchers}
  * @author	kostas.kougios
  *            Date: 05/08/14
  */
-class BaseSuite extends FunSuite with Matchers with BeforeAndAfterAll
+class BaseEndToEndSuite extends FunSuite with Matchers with BeforeAndAfterAll
 {
 	var setup: TestSetup = _
 

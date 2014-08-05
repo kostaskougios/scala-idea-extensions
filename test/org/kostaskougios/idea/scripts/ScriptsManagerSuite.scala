@@ -1,7 +1,7 @@
 package org.kostaskougios.idea.scripts
 
 import org.junit.runner.RunWith
-import org.kostaskougios.idea.BaseSuite
+import org.kostaskougios.idea.BaseEndToEndSuite
 import org.scalatest.junit.JUnitRunner
 
 /**
@@ -9,7 +9,7 @@ import org.scalatest.junit.JUnitRunner
  *            Date: 04/08/14
  */
 @RunWith(classOf[JUnitRunner])
-class ScriptsManagerSuite extends BaseSuite
+class ScriptsManagerSuite extends BaseEndToEndSuite
 {
 	test("compiles ok") {
 		val scriptManager = new ScriptsManager(Array())

@@ -1,6 +1,7 @@
 package org.kostaskougios.idea.scripts
 
 import org.junit.runner.RunWith
+import org.kostaskougios.idea.TestSetup
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 
@@ -12,7 +13,7 @@ import org.scalatest.{BeforeAndAfter, FunSuite, Matchers}
 class ScriptsManagerSuite extends FunSuite with Matchers with BeforeAndAfter
 {
 	before {
-		new TestT(getClass.getSimpleName).init()
+		new TestSetup(getClass.getSimpleName).init()
 	}
 
 	test("compiles ok") {

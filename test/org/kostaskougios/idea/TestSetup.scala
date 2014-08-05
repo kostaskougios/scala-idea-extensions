@@ -1,4 +1,4 @@
-package org.kostaskougios.idea.scripts
+package org.kostaskougios.idea
 
 import java.io.File
 
@@ -8,7 +8,7 @@ import com.intellij.testFramework.fixtures.JavaCodeInsightFixtureTestCase
  * @author	kostas.kougios
  *            Date: 05/08/14
  */
-class TestT(name: String) extends JavaCodeInsightFixtureTestCase
+class TestSetup(name: String) extends JavaCodeInsightFixtureTestCase
 {
 
 	override def getName = name

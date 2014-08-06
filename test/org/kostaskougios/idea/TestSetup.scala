@@ -15,6 +15,8 @@ class TestSetup(name: String) extends JavaCodeInsightFixtureTestCase
 
 	override def getName = name
 
+	def fixture = myFixture
+
 	def init() {
 		setUp()
 	}

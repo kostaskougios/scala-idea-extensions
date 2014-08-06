@@ -51,7 +51,6 @@ class ScriptsManager(compilationListeners: Array[CompilationListener]) extends A
 		getClass.getClassLoader
 	)
 
-
 	scriptEngine = ScalaScriptEngine.onChangeRefresh(config, 1000)
 
 	override def initComponent() {
@@ -90,10 +89,15 @@ object ScriptsManager
 	private var scriptEngine: ScalaScriptEngine = _
 
 	def waitInitialCompilation() {
-		while (scriptEngine.versionNumber == 0) Thread.sleep(10)
+		var cnt = 0
+		while (scriptEngine.versionNumber == 0 && cnt < 1000) {
+			cnt += 1
+			Thread.sleep(10)
+		}
+		if (cnt > 999) throw new IllegalStateException("compilation timed out")
 	}
 
-	def script[T, R](className: String)(runner: T => R): Option[R] = {
+	def script[T, R](className: String)(runner: T => R): Option[R] =
 		if (GlobalEnable.isEnabled) {
 			Env.set(ScriptEnvironment(scriptsRootFolder))
 			try {
@@ -103,5 +107,4 @@ object ScriptsManager
 				Env.set(null)
 			}
 		} else None
-	}
 }

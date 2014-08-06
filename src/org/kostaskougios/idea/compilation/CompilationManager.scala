@@ -18,6 +18,11 @@ class CompilationManager extends CompilationListener
 {
 	private var projectCompilationListeners = List[String]()
 
+	/**
+	 * this should be invoked when a project opens, this is done in ProjectsManager
+	 *
+	 * @param project the project
+	 */
 	def projectOpened(project: Project) {
 		val compilerManager = CompilerManager.getInstance(project)
 		if (compilerManager != null) {
